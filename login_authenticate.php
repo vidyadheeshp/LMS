@@ -1,53 +1,28 @@
 <?php 
  
  if(isset($_POST['submit'])){
- 	//echo 'Form Submitted';
-
- 	//$username = "abc@gmail.com";
- 	//$password = 'abc123';
-
- 	//Database connectivity.
- 	$servername = "localhost";
-	$username = "root";
-	$password = "";
-	$db = "my-project";
-
-// Create connection
-	$conn = mysqli_connect($servername, $username, $password,$db);
-
-	// Check connection
-	if (!$conn) {
-	  die("Connection failed: " . mysqli_connect_error());
-	}
-	echo "Connected successfully";
+ 	
+ 	include('pages/required/db_connection.php');
+ 	include('pages/required/functions.php');
 
 	$user = $_POST['username'];
  	$pass = $_POST['password'];
 
- 	$query = "SELECT id,name FROM users WHERE username='$user'AND password='$pass'";
+ 	$query = "SELECT id,name 
+ 				FROM employee_master 
+ 				WHERE username='".$user."'AND password='".$pass."' AND status = 1";
  
- 	$result = mysqli_query($conn, $query);
+ 	$result = db_one($query);
  	
- 	 $row = mysqli_fetch_assoc($result);
-
- 	 $user_name = $row['name'];
-
- 	if (mysqli_num_rows($result) >= 1) {
+ 	if ($result != NULL){
  		session_start();
 
- 		$_SESSION['name'] = $user_name;
+ 		$_SESSION['name'] = $result['name'];
  		//$name = $_SESSION['name'];
- 		header('Location: index.php');
+ 		header('Location: home.php');
  	}else{
- 		header('Location: login.php');
+ 		header('Location: index.php');
  	}
  	
-
- 	/*if($user == $username && $pass == $password){
- 		//session_start();
- 		header('Location: index.php');
- 	}else{
- 		header('Location: login.php');
- 	}*/
  }
 ?>

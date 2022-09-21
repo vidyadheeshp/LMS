@@ -19,8 +19,22 @@
 		//fetch one
 		$result = mysqli_query($con, $sql_query);
 		$row = mysqli_fetch_assoc($result);
-		//echo $result;
+		
 		return $row;
+	}
+
+	function db_login($sql_query){
+		include('db_connection.php');
+		//fetch one
+		$result = mysqli_query($con, $sql_query);
+		$row = mysqli_fetch_assoc($result);
+		if(mysqli_num_rows($result) == 1){
+			return $row;
+		}else{
+			return 0;
+		}
+
+		//return $row;
 	}
 	
 	function login_message($msg,$type){
